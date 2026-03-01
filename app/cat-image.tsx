@@ -1,0 +1,32 @@
+"use client";
+
+import {useState} from "react";
+import { fetchImage } from "./fetch-image";
+import styles from "./page.module.css";
+
+// コンポーネントの引数定義
+type CatImageProps = {
+    url: string;
+};
+
+// 画像を表示するコンポーネント
+export function CatImage({url}: CatImageProps){
+    // useStateを使って状態を管理
+    const [imageUrl, setImageUrl] = useState(url);
+
+    // 画像取得関数を定義
+    const refreshImage = async () => {
+        setImageUrl("") // 初期化
+        const image = await fetchImage();
+        setImageUrl(image.url);
+    }
+
+    return (
+        <div>
+            <button onClick={refreshImage} className={styles.button}>他のにゃんこも見る</button>
+            <div className={styles.frame}>
+                {imageUrl && <img src={imageUrl} className={styles.img} />}
+            </div>
+        </div>
+    );
+}
